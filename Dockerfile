@@ -4,10 +4,6 @@ FROM golang:1.23 AS builder
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Go modules manifest and download dependencies
-COPY go.mod go.sum ./
-RUN go mod download
-
 # Copy the source code into the container
 COPY . .
 
