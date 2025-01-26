@@ -1,3 +1,3 @@
-module hellorest
+module github.com/UnitVectorY-Labs/hellorest
 
 go 1.23.5
