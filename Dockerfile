@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the source code into the container
 COPY . .
 
+# Ensures a statically linked binary
+ENV CGO_ENABLED=0
+
 # Build the Go gRPC server
 RUN go build -mod=readonly -o server .
 
