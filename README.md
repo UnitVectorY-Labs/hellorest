@@ -2,8 +2,6 @@
 
 # hellorest
 
-A minimal Go API returning {"hello": "world"} on a GET / request
-
 A trivial Go API returning `{"hello": "world"}` on a `GET /` request. This project is designed as a simple Docker container to test API responses and configurations.
 
 All other verbs and paths return a 404.
