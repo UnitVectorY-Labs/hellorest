@@ -55,3 +55,26 @@ jobs:
         package-type: container
         min-versions-to-keep: 10
         delete-only-untagged-versions: 'true'
+
+  trigger-rollout:
+    needs: build-and-push
+    runs-on: arc-runner-set
+    timeout-minutes: 10
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Set lowercase repository name
+        shell: bash
+        run: |
+          echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+
+      - name: Trigger rollout
+        uses: unitvectory-labs/kuberollouttrigger-action@416a2ca6ca603d5600e55b525b94c2a3e983710e # v0.1.0
+        with:
+          audience: ${{ secrets.KUBEROLLOUTTRIGGER_AUD }}
+          url: ${{ secrets.KUBEROLLOUTTRIGGER_URL }}
+          image: ghcr.io/${{ env.REPO_LC }}-snapshot
+          tag: dev
