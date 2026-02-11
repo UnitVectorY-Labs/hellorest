@@ -128,7 +128,7 @@ jobs:
         delete-only-untagged-versions: 'true'
 
   trigger-rollout:
-    needs: cleanup
+    needs: manifest
     runs-on: arc-runner-set
     timeout-minutes: 10
 
