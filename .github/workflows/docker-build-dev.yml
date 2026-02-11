@@ -4,12 +4,13 @@ on:
   push:
     branches: [ "main" ]
 
+concurrency:
+  group: docker
+
 jobs:
   build-and-push:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 30
-    concurrency:
-      group: docker
 
     strategy:
       fail-fast: false
@@ -69,8 +70,6 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    concurrency:
-      group: docker
 
     permissions:
       contents: read
@@ -107,8 +106,6 @@ jobs:
     needs: manifest
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    concurrency:
-      group: docker
 
     permissions:
       contents: read
@@ -151,4 +148,4 @@ jobs:
           audience: ${{ secrets.KUBEROLLOUTTRIGGER_AUD }}
           url: ${{ secrets.KUBEROLLOUTTRIGGER_URL }}
           image: ghcr.io/${{ env.REPO_LC }}-snapshot
-          tag: dev
+          tags: dev,dev-amd64,dev-arm64
