@@ -118,6 +118,8 @@ jobs:
     - name: Create and push multi-arch manifest
       id: push
       shell: bash
+      env:
+        TAGS: ${{ steps.meta.outputs.tags }}
       run: |
         IMAGE="ghcr.io/${REPO_LC}"
         VERSION="${GITHUB_REF_NAME}"
@@ -125,7 +127,7 @@ jobs:
         TAG_ARGS=""
         while IFS= read -r tag; do
           [ -n "${tag}" ] && TAG_ARGS="${TAG_ARGS} -t ${tag}"
-        done <<< "${{ steps.meta.outputs.tags }}"
+        done <<< "${TAGS}"
 
         docker buildx imagetools create \
           ${TAG_ARGS} \
