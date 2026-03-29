@@ -5,7 +5,8 @@ on:
     types: [published]
 
 concurrency:
-  group: docker
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build-and-push:
@@ -120,9 +121,9 @@ jobs:
       shell: bash
       env:
         TAGS: ${{ steps.meta.outputs.tags }}
+        META_VERSION: ${{ steps.meta.outputs.version }}
       run: |
         IMAGE="ghcr.io/${REPO_LC}"
-        VERSION="${GITHUB_REF_NAME}"
 
         TAG_ARGS=""
         while IFS= read -r tag; do
@@ -131,12 +132,10 @@ jobs:
 
         docker buildx imagetools create \
           ${TAG_ARGS} \
-          "${IMAGE}:${VERSION}-amd64" \
-          "${IMAGE}:${VERSION}-arm64"
+          "${IMAGE}:${META_VERSION}-amd64" \
+          "${IMAGE}:${META_VERSION}-arm64"
 
-        docker buildx imagetools inspect "${IMAGE}:${VERSION}"
-
-        DIGEST=$(docker buildx imagetools inspect "${IMAGE}:${VERSION}" | grep -m1 'Digest:' | awk '{print $2}')
+        DIGEST=$(docker buildx imagetools inspect "${IMAGE}:${META_VERSION}" --format '{{json .}}' | jq -r '.Digest')
         echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
 
     - name: Generate artifact attestation
