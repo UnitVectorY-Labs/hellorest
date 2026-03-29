@@ -133,7 +133,7 @@ jobs:
           "${IMAGE}:${META_VERSION}-amd64" \
           "${IMAGE}:${META_VERSION}-arm64"
 
-        DIGEST=$(docker buildx imagetools inspect "${IMAGE}:${META_VERSION}" --format '{{.Manifest.Digest}}')
+        DIGEST=$(docker buildx imagetools inspect "${IMAGE}:${META_VERSION}" --format '{{json .Manifest.Digest}}' | jq -r '.')
         echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
 
     - name: Generate artifact attestation
