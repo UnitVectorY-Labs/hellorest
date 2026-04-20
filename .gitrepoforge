@@ -1,0 +1,14 @@
+name: hellorest
+default_branch: main
+config:
+  description: "A trivial Go API returning `{\"hello\": \"world\"}` on a `GET /` request. This project is designed as a simple Docker container to test API responses and configurations."
+  license: MIT
+  language: go
+  release: docker-go
+  justfile: true
+  release_github: true
+  status: active
+  codecov:
+    enabled: true
+  docs:
+    enabled: false
