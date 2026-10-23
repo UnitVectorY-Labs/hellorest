@@ -1,6 +1,7 @@
 name: hellorest
 default_branch: main
 config:
+  osv: sarif
   description: "A trivial Go API returning `{\"hello\": \"world\"}` on a `GET /` request. This project is designed as a simple Docker container to test API responses and configurations."
   license: MIT
   language: go
