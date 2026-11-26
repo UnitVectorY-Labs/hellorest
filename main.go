@@ -1,7 +1,8 @@
 package main
 
 import (
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"net/http"
 	"os"
 	"runtime/debug"
@@ -18,7 +19,7 @@ func helloWorld(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("X-App-Version", Version)
-	json.NewEncoder(w).Encode(map[string]string{"hello": "world"})
+	json.MarshalEncode(jsontext.NewEncoder(w), map[string]string{"hello": "world"})
 }
 
 func main() {
